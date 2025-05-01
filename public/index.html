@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Translate GG - Dashboard</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://storage.nexfuture.com.br/1/0c4c6fc2025640788752.jpeg" type="image/jpeg">
+
+  <!-- Meta tags para SEO -->
+  <meta name="description" content="O Translate GG oferece um painel para traduções rápidas e fáceis.">
+  <meta name="keywords" content="tradução, painel, Translate GG, tradução automática, dashboard">
+
+  <!-- Meta tags Open Graph (Facebook) -->
+  <meta property="og:title" content="Translate GG - Dashboard">
+  <meta property="og:description" content="O Translate GG oferece um painel para traduções rápidas e fáceis.">
+  <meta property="og:image" content="https://storage.nexfuture.com.br/1/0c4c6fc2025640788752.jpeg">
+  <meta property="og:url" content="https://nexfuture.com.br/">
+  <meta property="og:type" content="website">
+
+  <!-- Meta tags Twitter Card -->
+  <meta name="twitter:title" content="Translate GG - Dashboard">
+  <meta name="twitter:description" content="O Translate GG oferece um painel para traduções rápidas e fáceis.">
+  <meta name="twitter:image" content="https://storage.nexfuture.com.br/1/0c4c6fc2025640788752.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- Links para estilos -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    }
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .loader {
+      border-top-color: #4f46e5;
+      animation: spinner 1s linear infinite;
+    }
+    @keyframes spinner {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <div class="gradient-bg text-white shadow-lg">
+    <div class="container mx-auto px-4 py-6">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-language text-3xl"></i>
+          <h1 class="text-2xl font-bold">Translate GG</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button id="refreshBtn" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition">
+            <i class="fas fa-sync-alt mr-2"></i>Atualizar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Card 1 -->
+      <div class="bg-white rounded-lg shadow-md p-6 card">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm">Total de Requisições</p>
+            <h3 id="totalRequests" class="text-3xl font-bold text-gray-800">--</h3>
+          </div>
+          <div class="bg-indigo-100 p-3 rounded-full">
+            <i class="fas fa-exchange-alt text-indigo-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="flex items-center">
+            <span class="text-green-500 text-sm font-medium flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>12%
+            </span>
+            <span class="text-gray-400 text-sm ml-2">desde o último mês</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white rounded-lg shadow-md p-6 card">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm">Traduções com Sucesso</p>
+            <h3 id="successfulTranslations" class="text-3xl font-bold text-gray-800">--</h3>
+          </div>
+          <div class="bg-green-100 p-3 rounded-full">
+            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="flex items-center">
+            <span class="text-green-500 text-sm font-medium flex items-center">
+              <i class="fas fa-arrow-up mr-1"></i>8%
+            </span>
+            <span class="text-gray-400 text-sm ml-2">desde o último mês</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white rounded-lg shadow-md p-6 card">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm">Traduções Falhas</p>
+            <h3 id="failedTranslations" class="text-3xl font-bold text-gray-800">--</h3>
+          </div>
+          <div class="bg-red-100 p-3 rounded-full">
+            <i class="fas fa-times-circle text-red-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="flex items-center">
+            <span class="text-red-500 text-sm font-medium flex items-center">
+              <i class="fas fa-arrow-down mr-1"></i>3%
+            </span>
+            <span class="text-gray-400 text-sm ml-2">desde o último mês</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white rounded-lg shadow-md p-6 card">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500 text-sm">Tempo Médio de Resposta</p>
+            <h3 id="avgResponseTime" class="text-3xl font-bold text-gray-800">-- ms</h3>
+          </div>
+          <div class="bg-yellow-100 p-3 rounded-full">
+            <i class="fas fa-clock text-yellow-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="flex items-center">
+            <span class="text-green-500 text-sm font-medium flex items-center">
+              <i class="fas fa-arrow-down mr-1"></i>5%
+            </span>
+            <span class="text-gray-400 text-sm ml-2">desde o último mês</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- Gráfico de Idiomas de Origem -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Idiomas de Origem Mais Comuns</h3>
+        <div class="h-64">
+          <canvas id="sourceLanguagesChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Gráfico de Idiomas de Destino -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Idiomas de Destino Mais Comuns</h3>
+        <div class="h-64">
+          <canvas id="targetLanguagesChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Teste de Tradução</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-gray-700 text-sm font-medium mb-2">Texto Original</label>
+          <textarea id="originalText" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" rows="5" placeholder="Digite o texto para traduzir..."></textarea>
+          <div class="mt-2">
+            <label class="block text-gray-700 text-sm font-medium mb-2">Idioma de Origem (opcional)</label>
+            <select id="sourceLang" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+              <option value="">Auto-detectar</option>
+              <option value="en">Inglês</option>
+              <option value="pt">Português</option>
+              <option value="es">Espanhol</option>
+              <option value="fr">Francês</option>
+              <option value="de">Alemão</option>
+              <option value="it">Italiano</option>
+              <option value="ja">Japonês</option>
+              <option value="zh">Chinês</option>
+              <option value="ru">Russo</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-gray-700 text-sm font-medium">Texto Traduzido</label>
+            <div id="translationLoader" class="hidden">
+              <div class="loader h-4 w-4 rounded-full border-2 border-gray-200"></div>
+            </div>
+          </div>
+          <textarea id="translatedText" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" rows="5" placeholder="Resultado da tradução..." readonly></textarea>
+          <div class="mt-2">
+            <label class="block text-gray-700 text-sm font-medium mb-2">Idioma de Destino</label>
+            <select id="targetLang" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+              <option value="en">Inglês</option>
+              <option value="pt" selected>Português</option>
+              <option value="es">Espanhol</option>
+              <option value="fr">Francês</option>
+              <option value="de">Alemão</option>
+              <option value="it">Italiano</option>
+              <option value="ja">Japonês</option>
+              <option value="zh">Chinês</option>
+              <option value="ru">Russo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4">
+        <button id="translateBtn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 transition">
+          <i class="fas fa-language mr-2"></i>Traduzir
+        </button>
+        <div id="translationError" class="mt-2 text-red-500 text-sm hidden"></div>
+        <div id="translationInfo" class="mt-2 text-gray-500 text-sm hidden">
+          <span>Idioma detectado: <span id="detectedLang">-</span></span>
+          <span class="ml-4">Tempo de tradução: <span id="translationTime">-</span> ms</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Documentação da API</h3>
+      <div class="prose max-w-none">
+        <p>A API de tradução permite traduzir texto entre diferentes idiomas. Abaixo estão os endpoints disponíveis:</p>
+        
+        <h4 class="text-md font-medium mt-4">Endpoint de Tradução</h4>
+        <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto"><code>POST /api/v1/translate</code></pre>
+        
+        <h5 class="font-medium mt-3">Parâmetros do Corpo (JSON)</h5>
+        <ul class="list-disc pl-5">
+          <li><strong>text</strong> (obrigatório): O texto a ser traduzido</li>
+          <li><strong>targetLang</strong> (opcional): O código do idioma de destino (padrão: "en")</li>
+          <li><strong>sourceLang</strong> (opcional): O código do idioma de origem</li>
+        </ul>
+        
+        <h5 class="font-medium mt-3">Exemplo de Requisição</h5>
+        <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto"><code>{
+  "text": "Hello world",
+  "targetLang": "pt",
+  "sourceLang": "en"
+}</code></pre>
+        
+        <h5 class="font-medium mt-3">Exemplo de Resposta</h5>
+        <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto"><code>{
+  "originalText": "Hello world",
+  "translatedText": "Olá mundo",
+  "detectedLanguage": "en",
+  "targetLanguage": "pt",
+  "translationTime": 125.45,
+  "timestamp": "2023-05-01T12:34:56.789Z"
+}</code></pre>
+        
+        <h4 class="text-md font-medium mt-4">Endpoint de Verificação de Saúde</h4>
+        <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto"><code>GET /health</code></pre>
+        
+        <h5 class="font-medium mt-3">Exemplo de Resposta</h5>
+        <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto"><code>{
+  "status": "operational",
+  "uptime": 3600,
+  "timestamp": "2023-05-01T12:34:56.789Z",
+  "database": "connected",
+  "memoryUsage": {
+    "rss": 50331648,
+    "heapTotal": 33554432,
+    "heapUsed": 20971520,
+    "external": 8388608
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-gray-800 text-white py-6 mt-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <div class="flex items-center space-x-2">
+            <i class="fas fa-language text-xl"></i>
+            <span class="text-lg font-bold">Translate GG</span>
+          </div>
+          <p class="text-gray-400 text-sm mt-1">Serviço de tradução rápido e confiável</p>
+        </div>
+
+        <div class="flex space-x-4">
+          <a href="https://github.com/vncscode" class="text-gray-400 hover:text-white transition" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github text-xl"></i>
+          </a>
+          <a href="https://www.instagram.com/vncs.br" class="text-gray-400 hover:text-white transition" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram text-xl"></i>
+          </a>
+        </div>
+        
+      </div>
+      <div class="mt-6 border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
+        <p>&copy; 2023 Translate GG. Todos os direitos reservados.</p>
+        <p>&copy; 2023 Translate GG. By @vncscode</p>
+        <p class="mt-1">Última atualização: <span id="lastUpdated">--</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elementos do DOM
+      const refreshBtn = document.getElementById('refreshBtn');
+      const translateBtn = document.getElementById('translateBtn');
+      const originalText = document.getElementById('originalText');
+      const translatedText = document.getElementById('translatedText');
+      const sourceLang = document.getElementById('sourceLang');
+      const targetLang = document.getElementById('targetLang');
+      const translationLoader = document.getElementById('translationLoader');
+      const translationError = document.getElementById('translationError');
+      const translationInfo = document.getElementById('translationInfo');
+      const detectedLang = document.getElementById('detectedLang');
+      const translationTime = document.getElementById('translationTime');
+      const lastUpdated = document.getElementById('lastUpdated');
+      
+      // Estatísticas
+      const totalRequests = document.getElementById('totalRequests');
+      const successfulTranslations = document.getElementById('successfulTranslations');
+      const failedTranslations = document.getElementById('failedTranslations');
+      const avgResponseTime = document.getElementById('avgResponseTime');
+      
+      // Gráficos
+      let sourceLanguagesChart;
+      let targetLanguagesChart;
+      
+      // Carregar estatísticas
+      async function loadStats() {
+        try {
+          const response = await fetch('/api/v1/stats');
+          const data = await response.json();
+          
+          // Atualizar cards
+          totalRequests.textContent = data.totalRequests.toLocaleString();
+          successfulTranslations.textContent = data.successfulTranslations.toLocaleString();
+          failedTranslations.textContent = data.failedTranslations.toLocaleString();
+          avgResponseTime.textContent = `${data.averageResponseTime.toLocaleString()} ms`;
+          
+          // Atualizar data
+          lastUpdated.textContent = new Date(data.lastUpdated).toLocaleString();
+          
+          // Atualizar gráficos
+          updateSourceLanguagesChart(data.topSourceLanguages);
+          updateTargetLanguagesChart(data.topTargetLanguages);
+        } catch (error) {
+          console.error('Erro ao carregar estatísticas:', error);
+        }
+      }
+      
+      // Inicializar gráficos
+      function initCharts() {
+        const sourceCtx = document.getElementById('sourceLanguagesChart').getContext('2d');
+        sourceLanguagesChart = new Chart(sourceCtx, {
+          type: 'bar',
+          data: {
+            labels: [],
+            datasets: [{
+              label: 'Número de Traduções',
+              data: [],
+              backgroundColor: 'rgba(79, 70, 229, 0.7)',
+              borderColor: 'rgba(79, 70, 229, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+        
+        const targetCtx = document.getElementById('targetLanguagesChart').getContext('2d');
+        targetLanguagesChart = new Chart(targetCtx, {
+          type: 'bar',
+          data: {
+            labels: [],
+            datasets: [{
+              label: 'Número de Traduções',
+              data: [],
+              backgroundColor: 'rgba(124, 58, 237, 0.7)',
+              borderColor: 'rgba(124, 58, 237, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+      
+      // Atualizar gráfico de idiomas de origem
+      function updateSourceLanguagesChart(data) {
+        const labels = data.map(item => getLanguageName(item.code));
+        const values = data.map(item => item.count);
+        
+        sourceLanguagesChart.data.labels = labels;
+        sourceLanguagesChart.data.datasets[0].data = values;
+        sourceLanguagesChart.update();
+      }
+      
+      // Atualizar gráfico de idiomas de destino
+      function updateTargetLanguagesChart(data) {
+        const labels = data.map(item => getLanguageName(item.code));
+        const values = data.map(item => item.count);
+        
+        targetLanguagesChart.data.labels = labels;
+        targetLanguagesChart.data.datasets[0].data = values;
+        targetLanguagesChart.update();
+      }
+      
+      // Obter nome do idioma a partir do código
+      function getLanguageName(code) {
+        const languages = {
+          'en': 'Inglês',
+          'pt': 'Português',
+          'es': 'Espanhol',
+          'fr': 'Francês',
+          'de': 'Alemão',
+          'it': 'Italiano',
+          'ja': 'Japonês',
+          'zh': 'Chinês',
+          'ru': 'Russo'
+        };
+        
+        return languages[code] || code;
+      }
+      
+      // Traduzir texto
+      async function translateText() {
+        const text = originalText.value.trim();
+        
+        if (!text) {
+          translationError.textContent = 'Por favor, digite um texto para traduzir.';
+          translationError.classList.remove('hidden');
+          return;
+        }
+        
+        translationError.classList.add('hidden');
+        translationInfo.classList.add('hidden');
+        translationLoader.classList.remove('hidden');
+        translatedText.value = '';
+        
+        try {
+          const response = await fetch('/api/v1/translate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              text: text,
+              targetLang: targetLang.value,
+              sourceLang: sourceLang.value || undefined
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.message || 'Erro ao traduzir texto');
+          }
+          
+          translatedText.value = data.translatedText;
+          detectedLang.textContent = getLanguageName(data.detectedLanguage);
+          translationTime.textContent = data.translationTime.toFixed(2);
+          translationInfo.classList.remove('hidden');
+          
+          // Recarregar estatísticas após tradução bem-sucedida
+          loadStats();
+        } catch (error) {
+          translationError.textContent = error.message || 'Erro ao traduzir texto';
+          translationError.classList.remove('hidden');
+        } finally {
+          translationLoader.classList.add('hidden');
+        }
+      }
+      
+      // Event listeners
+      refreshBtn.addEventListener('click', loadStats);
+      translateBtn.addEventListener('click', translateText);
+      
+      // Inicializar
+      initCharts();
+      loadStats();
+    });
+  </script>
+</body>
+</html>
